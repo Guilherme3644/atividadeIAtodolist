@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List IA</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 20px auto; background: #f4f4f4; }
+        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .task-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; }
+        .concluida { text-decoration: line-through; color: gray; }
+        .prioridade-Alta { border-left: 5px solid red; }
+        .prioridade-Média { border-left: 5px solid orange; }
+        .prioridade-Baixa { border-left: 5px solid green; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Minhas Tarefas</h2>
+        <input type="text" id="desc" placeholder="Descrição da tarefa">
+        <select id="prio">
+            <option value="Alta">Altaa</option>
+            <option value="Média">Média</option>
+            <option value="Baixa">Baixa</option>
+        </select>
+
+        <button onclick="adicionar()">Adicionar</button>
+        <div id="lista"></div>
+    </div>
+
+    <script>
+        let tarefas = [];
+
+        function adicionar() {
+            const desc = document.getElementById('desc').value;
+            const prio = document.getElementById('prio').value;
+            if (!desc) return alert("Digite uma descrição!");
+
+            tarefas.push({ desc, prio, concluida: false });
+            document.getElementById('desc').value = '';
+            renderizar();
+        }
+
+        function alternar(index) {
+            tarefas[index].concluida = !tarefas[index].concluida;
+            renderizar();
+        }
+
+        function renderizar() {
+            const lista = document.getElementById('lista');
+            lista.innerHTML = '';
+            tarefas.forEach((t, i) => {
+                lista.innerHTML += `
+                    <div class="task-item prioridade-${t.prio}">
+                        <span class="${t.concluida ? 'concluida' : ''}">
+                            [${t.prio}] ${t.desc}
+                        </span>
+                        <button onclick="alternar(${i})">
+                            ${t.concluida ? 'Desmarcar' : 'Concluir'}
+                        </button>
+                    </div>`;
+            });
+        }
+    </script>
+</body>
+</html>
